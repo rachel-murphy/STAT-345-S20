@@ -1,0 +1,66 @@
+---
+title: "HW9"
+author: "Rachel Murphy"
+date: "4/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, error=TRUE}
+# Function: cols.with.ab.zeros, to retrieve columns of matrix that have between
+#   a and b zeros, each
+# Inputs:
+# - my.mat: the original matrix 
+# - a: lower bound for number of zeros allowed; default is 0
+# - b: upper bound for number of zeros allowed; default is Inf
+# Output: the new matrix
+
+cols.with.ab.zeros = function(my.mat, a=0, b=Inf) {
+  zeros.per.column = colSums(my.mat==0) >= 1
+  i.to.keep = (a <= zeros.per.column && zeros.per.column <= b)
+  zeros.per.column >= 1
+  return(my.mat[i.to.keep,])
+}
+
+mat = matrix(c(0,0,1,0,1,1,1,1,1), 3, 3)
+identity.mat = diag(1, 3)
+cols.with.ab.zeros(mat) # Should get back original matrix
+cols.with.ab.zeros(mat, a=1, b=2) # Should get back first 2 columns of mat
+cols.with.ab.zeros(mat, a=2, b=2) # Should get just 1st column of mat; note
+# this should still be a matrix though, and not a numeric vector!
+cols.with.ab.zeros(identity.mat, a=2, b=2) # Should get back original matrix
+
+```
+
+```{r, error=TRUE}
+# Function: list.extractor, to extract elements of a list
+# Inputs:
+# - my.list: the original list 
+# - i.to.keep: vector of indices, corresponding to elements of the list we
+#   want to keep. Default is NULL, in which case this argument is ignored
+# - i.to.remove: vector of indices, corresponding to elements of the list we
+#   want to remove Default is NULL, in which case this argument is ignored.
+#   NOTE: if both i.to.keep and i.to.remove are non-NULL, then the first 
+#   one should take precedence (i.e., we don't remove anything)
+# Output: the new list
+
+list.extractor = function(my.list, i.to.keep=NULL, i.to.remove=NULL) {
+  
+  if ((!is.null(i.to.keep))&& (!is.null(i.to.remove))) {
+    L = my.list[i.to.keep]
+  }
+  else{ 
+    L = my.list[-i.to.remove]}
+  return(L)
+}
+
+cool.list = list(ints=1:10, lets=letters[1:8], fracs=1:7/7,
+                 bools=sample(c(TRUE,FALSE), 5, replace=TRUE))
+list.extractor(cool.list, i.to.keep=c(1,3)) # Should get list with ints, fracs
+list.extractor(cool.list, i.to.remove=4) # Should get list without bools
+list.extractor(cool.list, i.to.keep=2:4, i.to.remove=4) # Should get list with
+# lets, fracs, and bools (the i.to.remove argument should be ignored)
+```
