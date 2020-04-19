@@ -19,9 +19,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # Output: the new matrix
 
 cols.with.ab.zeros = function(my.mat, a=0, b=Inf) {
-  zeros.per.column = colSums(my.mat==0) >= 1
-  i.to.keep = (a <= zeros.per.column && zeros.per.column <= b)
-  zeros.per.column >= 1
+   zeros.per.column = colSums(my.mat !=0)
+i.to.keep <- a <= zeros.per.column || zeros.per.column <= b
   return(my.mat[i.to.keep,])
 }
 
@@ -32,7 +31,6 @@ cols.with.ab.zeros(mat, a=1, b=2) # Should get back first 2 columns of mat
 cols.with.ab.zeros(mat, a=2, b=2) # Should get just 1st column of mat; note
 # this should still be a matrix though, and not a numeric vector!
 cols.with.ab.zeros(identity.mat, a=2, b=2) # Should get back original matrix
-
 ```
 
 ```{r, error=TRUE}
@@ -52,8 +50,8 @@ list.extractor = function(my.list, i.to.keep=NULL, i.to.remove=NULL) {
   if ((!is.null(i.to.keep))&& (!is.null(i.to.remove))) {
     L = my.list[i.to.keep]
   }
-  else{ 
-    L = my.list[-i.to.remove]}
+  else
+    L = my.list[i.to.remove]
   return(L)
 }
 
